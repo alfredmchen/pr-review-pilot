@@ -29,7 +29,8 @@ Decimal phases appear between their surrounding integers in numeric order.
   2. `GITHUB_TOKEN` and `ANTHROPIC_API_KEY` exist only in server-only env vars; no `NEXT_PUBLIC_` prefix is used for any secret
   3. `providers.tsx` carries a `"use client"` directive and wraps `<CopilotKit>` — the app layout does not import it as a Server Component
   4. The CopilotKit runtime endpoint responds to a GET/POST at `/api/copilotkit`
-**Plans**: TBD
+**Plans**: 1 plan
+  - [ ] 01-01-PLAN.md — Walking Skeleton: scaffold Next.js + lock secrets + wire providers/runtime/home page (3 tasks; ends with human-verify checkpoint)
 **UI hint**: yes
 
 ### Phase 2: Type System + GitHub API Integration
@@ -79,7 +80,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Scaffolding + Security Foundation | 0/TBD | Not started | - |
+| 1. Scaffolding + Security Foundation | 0/1 | Not started | - |
 | 2. Type System + GitHub API Integration | 0/TBD | Not started | - |
 | 3. LLM Classification + Core UI | 0/TBD | Not started | - |
 | 4. Four Review Cards + CopilotKit Hook | 0/TBD | Not started | - |
