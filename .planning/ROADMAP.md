@@ -13,7 +13,7 @@ Four phases deliver a working demo: scaffold the app correctly from day one (sec
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Scaffolding + Security Foundation** - Running Next.js app with correct env var setup, CopilotKit runtime wired, and `providers.tsx` client boundary in place — security pitfalls blocked from commit one
-- [ ] **Phase 2: Type System + GitHub API Integration** - Shared `lib/types.ts` contract and `/api/analyze-pr` skeleton curl-testable with Octokit pagination
+- [x] **Phase 2: Type System + GitHub API Integration** - Shared `lib/types.ts` contract and `/api/analyze-pr` skeleton curl-testable with Octokit pagination (completed 2026-05-09)
 - [ ] **Phase 3: LLM Classification + Core UI** - End-to-end pipeline proven: URL input → GitHub fetch → Claude structured output → PRResultPanel dispatch → error and loading states
 - [ ] **Phase 4: Four Review Cards + CopilotKit Hook** - All four fully-populated review cards and `useCopilotAction` generative UI hook registered; demo-ready
 
@@ -44,7 +44,7 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. A curl POST with a PR URL whose diff exceeds 300 files or 20k lines returns a structured size-exceeded signal (not a 500 or silent truncation)
   4. The route uses the paginated `/pulls/{id}/files` endpoint, not the single-response diff endpoint
 **Plans**: 1 plan
-  - [ ] 02-01-PLAN.md — Vertical slice: install @octokit/rest+zod, define lib/types.ts contract, implement /api/analyze-pr (URL regex + two-stage Octokit fetch + size gate + paginated files), curl-verify three scenarios (3 tasks)
+  - [x] 02-01-PLAN.md — Vertical slice: install @octokit/rest+zod, define lib/types.ts contract, implement /api/analyze-pr (URL regex + two-stage Octokit fetch + size gate + paginated files), curl-verify three scenarios (3 tasks)
 
 ### Phase 3: LLM Classification + Core UI
 **Goal**: Users can paste a GitHub PR URL and see a classified result rendered in the browser — loading skeleton within 100ms, Claude classifies the diff into exactly one of four types via structured output, and error states surface for private repos and oversized PRs
@@ -82,6 +82,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Scaffolding + Security Foundation | 0/1 | Planned    |  |
-| 2. Type System + GitHub API Integration | 0/1 | Planned | - |
+| 2. Type System + GitHub API Integration | 1/1 | Complete   | 2026-05-09 |
 | 3. LLM Classification + Core UI | 0/TBD | Not started | - |
 | 4. Four Review Cards + CopilotKit Hook | 0/TBD | Not started | - |

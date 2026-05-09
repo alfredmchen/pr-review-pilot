@@ -9,8 +9,8 @@
 
 ### Input & Fetch
 
-- [ ] **FETCH-01**: User can paste a GitHub PR URL into an input field and trigger PR analysis
-- [ ] **FETCH-02**: App fetches PR metadata + diff from GitHub API (server-side, paginated `/files` endpoint)
+- [x] **FETCH-01**: User can paste a GitHub PR URL into an input field and trigger PR analysis
+- [x] **FETCH-02**: App fetches PR metadata + diff from GitHub API (server-side, paginated `/files` endpoint)
 - [ ] **FETCH-03**: Loading skeleton is visible within 100ms of submit (pipeline takes 3–8 seconds)
 - [ ] **FETCH-04**: App shows a helpful error for private repos: "This looks like a private repo — a GitHub token with access is required"
 - [ ] **FETCH-05**: App shows a PR size warning card instead of attempting classification for PRs > 300 files or 20k diff lines
@@ -56,8 +56,8 @@
 
 | Req ID | Phase | Status |
 |--------|-------|--------|
-| FETCH-01 | Phase 2 — Type System + GitHub API Integration | Pending |
-| FETCH-02 | Phase 2 — Type System + GitHub API Integration | Pending |
+| FETCH-01 | Phase 2 — Type System + GitHub API Integration | Complete |
+| FETCH-02 | Phase 2 — Type System + GitHub API Integration | Complete |
 | FETCH-03 | Phase 3 — LLM Classification + Core UI | Pending |
 | FETCH-04 | Phase 3 — LLM Classification + Core UI | Pending |
 | FETCH-05 | Phase 3 — LLM Classification + Core UI | Pending |
