@@ -30,7 +30,7 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. `providers.tsx` carries a `"use client"` directive and wraps `<CopilotKit>` — the app layout does not import it as a Server Component
   4. The CopilotKit runtime endpoint responds to a GET/POST at `/api/copilotkit`
 **Plans**: 1 plan
-  - [ ] 01-01-PLAN.md — Walking Skeleton: scaffold Next.js + lock secrets + wire providers/runtime/home page (3 tasks; ends with human-verify checkpoint)
+  - [x] 01-01-PLAN.md — Walking Skeleton: scaffold Next.js + lock secrets + wire providers/runtime/home page (3 tasks; ends with human-verify checkpoint)
 **UI hint**: yes
 
 ### Phase 2: Type System + GitHub API Integration
