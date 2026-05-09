@@ -13,11 +13,9 @@ const runtime = new CopilotRuntime({
   agents: { default: builtInAgent },
 });
 
-export const POST = async (req: NextRequest) => {
-  const { handleRequest } = copilotRuntimeNextJSAppRouterEndpoint({
-    runtime,
-    endpoint: "/api/copilotkit",
-  });
+const { handleRequest } = copilotRuntimeNextJSAppRouterEndpoint({
+  runtime,
+  endpoint: "/api/copilotkit",
+});
 
-  return handleRequest(req);
-};
+export const POST = (req: NextRequest) => handleRequest(req);
