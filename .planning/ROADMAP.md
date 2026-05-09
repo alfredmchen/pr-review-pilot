@@ -12,7 +12,7 @@ Four phases deliver a working demo: scaffold the app correctly from day one (sec
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Scaffolding + Security Foundation** - Running Next.js app with correct env var setup, CopilotKit runtime wired, and `providers.tsx` client boundary in place — security pitfalls blocked from commit one
+- [x] **Phase 1: Scaffolding + Security Foundation** - Running Next.js app with correct env var setup, CopilotKit runtime wired, and `providers.tsx` client boundary in place — security pitfalls blocked from commit one
 - [ ] **Phase 2: Type System + GitHub API Integration** - Shared `lib/types.ts` contract and `/api/analyze-pr` skeleton curl-testable with Octokit pagination
 - [ ] **Phase 3: LLM Classification + Core UI** - End-to-end pipeline proven: URL input → GitHub fetch → Claude structured output → PRResultPanel dispatch → error and loading states
 - [ ] **Phase 4: Four Review Cards + CopilotKit Hook** - All four fully-populated review cards and `useCopilotAction` generative UI hook registered; demo-ready
