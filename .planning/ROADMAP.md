@@ -80,7 +80,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Scaffolding + Security Foundation | 0/1 | Not started | - |
+| 1. Scaffolding + Security Foundation | 0/1 | Planned    |  |
 | 2. Type System + GitHub API Integration | 0/TBD | Not started | - |
 | 3. LLM Classification + Core UI | 0/TBD | Not started | - |
 | 4. Four Review Cards + CopilotKit Hook | 0/TBD | Not started | - |
