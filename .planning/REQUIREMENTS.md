@@ -54,18 +54,18 @@
 
 ## Traceability
 
-| Req ID | Phase |
-|--------|-------|
-| FETCH-01 | Phase 2 — GitHub API Integration |
-| FETCH-02 | Phase 2 — GitHub API Integration |
-| FETCH-03 | Phase 4 — Core UI |
-| FETCH-04 | Phase 4 — Core UI |
-| FETCH-05 | Phase 4 — Core UI |
-| CLASS-01 | Phase 3 — LLM Classification |
-| CARD-01 | Phase 5 — Review Cards |
-| CARD-02 | Phase 5 — Review Cards |
-| CARD-03 | Phase 5 — Review Cards |
-| CARD-04 | Phase 5 — Review Cards |
+| Req ID | Phase | Status |
+|--------|-------|--------|
+| FETCH-01 | Phase 2 — Type System + GitHub API Integration | Pending |
+| FETCH-02 | Phase 2 — Type System + GitHub API Integration | Pending |
+| FETCH-03 | Phase 3 — LLM Classification + Core UI | Pending |
+| FETCH-04 | Phase 3 — LLM Classification + Core UI | Pending |
+| FETCH-05 | Phase 3 — LLM Classification + Core UI | Pending |
+| CLASS-01 | Phase 3 — LLM Classification + Core UI | Pending |
+| CARD-01 | Phase 4 — Four Review Cards + CopilotKit Hook | Pending |
+| CARD-02 | Phase 4 — Four Review Cards + CopilotKit Hook | Pending |
+| CARD-03 | Phase 4 — Four Review Cards + CopilotKit Hook | Pending |
+| CARD-04 | Phase 4 — Four Review Cards + CopilotKit Hook | Pending |
 
 ---
 
