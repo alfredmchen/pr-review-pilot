@@ -1,16 +1,18 @@
 // app/page.tsx
 //
-// Phase 3 / Plan 03-02 — Server Component shell.
-// H1 + subtitle stay server-rendered; PRUrlForm is the client island that
-// holds form state and dispatches the result panel.
+// Phase 4 / Plan 04-01 — Server Component shell. Mounts the Copilot client
+// island (CopilotPRResultPanel), which registers `useCopilotAction` and
+// renders the URL input form internally. The page itself stays
+// server-rendered so only the form's interactive surface ships JS.
 //
-// Typography upgrade per UI-SPEC §"Typography":
-//   text-2xl font-bold (Phase 1) → text-3xl font-semibold tracking-tight
-// Bold (700) is replaced by semibold (600) so the page uses exactly the
-// 2 weights declared in the contract. Subtitle uses text-muted-foreground
-// (CSS variable) instead of literal text-gray-600 for dark-mode parity.
+// Phase 3 carryover: H1 + subtitle stay server-rendered; the wrapper
+// component is now the client island that owns the form + result panel.
+//
+// Typography (UI-SPEC §"Typography"):
+//   text-3xl font-semibold tracking-tight; subtitle uses
+//   text-muted-foreground (CSS variable) for dark-mode parity.
 
-import { PRUrlForm } from "@/components/PRUrlForm";
+import { CopilotPRResultPanel } from "@/components/CopilotPRResultPanel";
 
 export default function Home() {
   return (
@@ -22,7 +24,7 @@ export default function Home() {
         <p className="mt-2 text-base text-muted-foreground">
           Paste a GitHub PR URL to get a review interface tailored to what&apos;s actually in the diff.
         </p>
-        <PRUrlForm />
+        <CopilotPRResultPanel />
       </div>
     </main>
   );
