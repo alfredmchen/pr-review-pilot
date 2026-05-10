@@ -140,6 +140,10 @@ export async function POST(req: Request): Promise<Response> {
     patch: typeof f.patch === "string" ? f.patch : undefined,
   }));
 
+  // TODO Plan 03-02 Task 1: populate prType+signals+classification_reason
+  // from classifyPR(metadata, files). Phase 3 Plan 1 extended the 'ok' arm
+  // with these required fields; the call site is wired in Plan 2.
+  // @ts-expect-error Phase 3 Plan 2 wires this — see TODO above
   const ok: AnalyzeResponse = { status: "ok", metadata, files };
   // Runtime validation (cheap insurance against drift between types & API).
   const validated = AnalyzeResponseSchema.parse(ok);
