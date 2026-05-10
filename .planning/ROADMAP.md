@@ -57,7 +57,9 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. Submitting a private repo URL shows the message "This looks like a private repo — a GitHub token with access is required" rather than a generic error
   4. Submitting a PR URL that exceeds the size limit renders a PR size warning card instead of attempting classification
   5. `PRResultPanel` dispatches to a placeholder card component for each of the four `prType` values with no unhandled render path
-**Plans**: TBD
+**Plans**: 2 plans
+  - [ ] 03-01-PLAN.md — Wave 1 foundation: extend `lib/types.ts` with new status arms + concrete signal schemas; install `@anthropic-ai/sdk@0.95.x` exact-pinned + write `lib/anthropic.ts` (`classifyPR` with claude-haiku-4-5-20251001 + Zod validation); init shadcn and add 6 primitives (card, skeleton, alert, button, input, badge) (3 tasks)
+  - [ ] 03-02-PLAN.md — Wave 2 vertical UI slice: extend `/api/analyze-pr` route with 401/403→private-repo + 404→not-found branches and the classifyPR call site; build PRResultPanel dispatcher + 8 cards (4 prType placeholders, 3 status-error cards, 1 unclassified fallback); build PRUrlForm with useTransition for sub-100ms skeleton; wire into app/page.tsx (3 tasks)
 **UI hint**: yes
 
 ### Phase 4: Four Review Cards + CopilotKit Hook
@@ -83,5 +85,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 |-------|----------------|--------|-----------|
 | 1. Scaffolding + Security Foundation | 0/1 | Planned    |  |
 | 2. Type System + GitHub API Integration | 1/1 | Complete   | 2026-05-09 |
-| 3. LLM Classification + Core UI | 0/TBD | Not started | - |
+| 3. LLM Classification + Core UI | 0/2 | Planned | - |
 | 4. Four Review Cards + CopilotKit Hook | 0/TBD | Not started | - |
