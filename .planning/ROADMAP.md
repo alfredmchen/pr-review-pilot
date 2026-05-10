@@ -14,7 +14,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Scaffolding + Security Foundation** - Running Next.js app with correct env var setup, CopilotKit runtime wired, and `providers.tsx` client boundary in place — security pitfalls blocked from commit one
 - [x] **Phase 2: Type System + GitHub API Integration** - Shared `lib/types.ts` contract and `/api/analyze-pr` skeleton curl-testable with Octokit pagination (completed 2026-05-09)
-- [ ] **Phase 3: LLM Classification + Core UI** - End-to-end pipeline proven: URL input → GitHub fetch → Claude structured output → PRResultPanel dispatch → error and loading states
+- [x] **Phase 3: LLM Classification + Core UI** - End-to-end pipeline proven: URL input → GitHub fetch → Claude structured output → PRResultPanel dispatch → error and loading states (completed 2026-05-09)
 - [ ] **Phase 4: Four Review Cards + CopilotKit Hook** - All four fully-populated review cards and `useCopilotAction` generative UI hook registered; demo-ready
 
 ## Phase Details
@@ -59,7 +59,7 @@ Decimal phases appear between their surrounding integers in numeric order.
   5. `PRResultPanel` dispatches to a placeholder card component for each of the four `prType` values with no unhandled render path
 **Plans**: 2 plans
   - [x] 03-01-PLAN.md — Wave 1 foundation: extend `lib/types.ts` with new status arms + concrete signal schemas; install `@anthropic-ai/sdk@0.95.x` exact-pinned + write `lib/anthropic.ts` (`classifyPR` with claude-haiku-4-5-20251001 + Zod validation); init shadcn and add 6 primitives (card, skeleton, alert, button, input, badge) (3 tasks)
-  - [ ] 03-02-PLAN.md — Wave 2 vertical UI slice: extend `/api/analyze-pr` route with 401/403→private-repo + 404→not-found branches and the classifyPR call site; build PRResultPanel dispatcher + 8 cards (4 prType placeholders, 3 status-error cards, 1 unclassified fallback); build PRUrlForm with useTransition for sub-100ms skeleton; wire into app/page.tsx (3 tasks)
+  - [x] 03-02-PLAN.md — Wave 2 vertical UI slice: extend `/api/analyze-pr` route with 401/403→private-repo + 404→not-found branches and the classifyPR call site; build PRResultPanel dispatcher + 8 cards (4 prType placeholders, 3 status-error cards, 1 unclassified fallback); build PRUrlForm with useTransition for sub-100ms skeleton; wire into app/page.tsx (3 tasks) (completed 2026-05-09)
 **UI hint**: yes
 
 ### Phase 4: Four Review Cards + CopilotKit Hook
@@ -85,5 +85,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 |-------|----------------|--------|-----------|
 | 1. Scaffolding + Security Foundation | 0/1 | Planned    |  |
 | 2. Type System + GitHub API Integration | 1/1 | Complete   | 2026-05-09 |
-| 3. LLM Classification + Core UI | 0/2 | Planned | - |
+| 3. LLM Classification + Core UI | 2/2 | Complete | 2026-05-09 |
 | 4. Four Review Cards + CopilotKit Hook | 0/TBD | Not started | - |

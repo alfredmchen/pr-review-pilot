@@ -11,13 +11,13 @@
 
 - [x] **FETCH-01**: User can paste a GitHub PR URL into an input field and trigger PR analysis
 - [x] **FETCH-02**: App fetches PR metadata + diff from GitHub API (server-side, paginated `/files` endpoint)
-- [ ] **FETCH-03**: Loading skeleton is visible within 100ms of submit (pipeline takes 3–8 seconds)
-- [ ] **FETCH-04**: App shows a helpful error for private repos: "This looks like a private repo — a GitHub token with access is required"
-- [ ] **FETCH-05**: App shows a PR size warning card instead of attempting classification for PRs > 300 files or 20k diff lines
+- [x] **FETCH-03**: Loading skeleton is visible within 100ms of submit (pipeline takes 3–8 seconds)
+- [x] **FETCH-04**: App shows a helpful error for private repos: "This looks like a private repo — a GitHub token with access is required"
+- [x] **FETCH-05**: App shows a PR size warning card instead of attempting classification for PRs > 300 files or 20k diff lines
 
 ### Classification
 
-- [ ] **CLASS-01**: LLM classifies the PR into exactly one of four types (security / refactor / api-change / bug-fix) via a single structured output call
+- [x] **CLASS-01**: LLM classifies the PR into exactly one of four types (security / refactor / api-change / bug-fix) via a single structured output call
 
 ### Review Cards
 
@@ -58,10 +58,10 @@
 |--------|-------|--------|
 | FETCH-01 | Phase 2 — Type System + GitHub API Integration | Complete |
 | FETCH-02 | Phase 2 — Type System + GitHub API Integration | Complete |
-| FETCH-03 | Phase 3 — LLM Classification + Core UI | Pending |
-| FETCH-04 | Phase 3 — LLM Classification + Core UI | Pending |
-| FETCH-05 | Phase 3 — LLM Classification + Core UI | Pending |
-| CLASS-01 | Phase 3 — LLM Classification + Core UI | Pending |
+| FETCH-03 | Phase 3 — LLM Classification + Core UI | Complete |
+| FETCH-04 | Phase 3 — LLM Classification + Core UI | Complete |
+| FETCH-05 | Phase 3 — LLM Classification + Core UI | Complete |
+| CLASS-01 | Phase 3 — LLM Classification + Core UI | Complete |
 | CARD-01 | Phase 4 — Four Review Cards + CopilotKit Hook | Pending |
 | CARD-02 | Phase 4 — Four Review Cards + CopilotKit Hook | Pending |
 | CARD-03 | Phase 4 — Four Review Cards + CopilotKit Hook | Pending |

@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Phase 2 context gathered
-last_updated: "2026-05-10T00:02:23.249Z"
-last_activity: 2026-05-10 -- Phase 03 execution started
+stopped_at: Phase 03 Plan 02 complete — ready for Phase 4
+last_updated: "2026-05-10T00:30:00.000Z"
+last_activity: 2026-05-10 -- Phase 03 Plan 02 complete; Phase 03 done
 progress:
   total_phases: 4
-  completed_phases: 2
+  completed_phases: 3
   total_plans: 4
-  completed_plans: 2
-  percent: 50
+  completed_plans: 4
+  percent: 75
 ---
 
 # Project State
@@ -25,12 +25,12 @@ See: .planning/PROJECT.md (updated 2026-05-09)
 
 ## Current Position
 
-Phase: 03 (llm-classification-core-ui) — EXECUTING
-Plan: 1 of 2
-Status: Executing Phase 03
-Last activity: 2026-05-10 -- Phase 03 execution started
+Phase: 03 (llm-classification-core-ui) — COMPLETE
+Plan: 2 of 2 (final plan in phase shipped)
+Status: Phase 03 complete; ready for Phase 04 (Four Review Cards + CopilotKit Hook)
+Last activity: 2026-05-10 -- Phase 03 Plan 02 shipped end-to-end UI vertical slice (form + dispatcher + 8 cards + route wiring)
 
-Progress: [██████████] 100%
+Progress: [████████░░] 75%
 
 ## Performance Metrics
 
@@ -54,6 +54,8 @@ Progress: [██████████] 100%
 *Updated after each plan completion*
 | Phase 01-scaffolding-security-foundation P01 | 45min | 3 tasks | 14 files |
 | Phase 02-type-system-github-api-integration P01 | 5min | 3 tasks | 5 files |
+| Phase 03-llm-classification-core-ui P01 | 50min | 3 tasks | 14 files |
+| Phase 03-llm-classification-core-ui P02 | 25min | 3 tasks | 12 files |
 
 ## Accumulated Context
 
@@ -71,6 +73,13 @@ Recent decisions affecting current work:
 - [Phase ?]: Phase 2 Plan 1: Used module-scoped Octokit; auth frozen at first import
 - [Phase ?]: Phase 2 Plan 1: 401/404 from pulls.get currently mapped to HTTP 502 with upstreamStatus in body; Phase 3 FETCH-04 narrows into status:'private-repo'/'not-found' (D-13)
 - [Phase ?]: Phase 2 Plan 1: Signal types are Record<string,unknown> intersection placeholders — exist and importable; Phase 3 narrows per CARD-NN without breaking imports
+- [Phase 03 P02]: Route extension over rewrite — Stage 3 classifyPR() call appended to existing pipeline; Phase 2's Octokit + size-gate code unchanged
+- [Phase 03 P02]: 401+403 both map to private-repo (token scope vs auth ambiguity); 404 stays separate per UI-SPEC color rules
+- [Phase 03 P02]: GitHub returns 404 for *any* inaccessible repo (not 401/403) — private-repo branch is dead code in normal operation; fires only on token-scope failure. Differentiation is a v2 concern.
+- [Phase 03 P02]: Classifier failure → HTTP 500 with {error, detail}, NOT a new 'classifier-failed' status arm (keeps AnalyzeResponse at 5 arms; T-03-08 mitigation — only err.message echoed, never raw diff)
+- [Phase 03 P02]: useTransition over Server Action for FETCH-03 — client-side fetch lets the form own the loading-state moment precisely; setPanel({kind:'loading'}) commits before the fetch promise resolves
+- [Phase 03 P02]: Two-layer prType fallback (Zod enum + CARD_MAP nullish + UnclassifiedCard) closes REQUIREMENTS.md flagged risk for unexpected prType values
+- [Phase 03 P02]: ReactElement (not JSX.Element) used in Record<PRType, () => …> typing — React 19 + project tsconfig does not auto-resolve global JSX namespace
 
 ### Pending Todos
 
@@ -78,8 +87,9 @@ None yet.
 
 ### Blockers/Concerns
 
-- **Phase 3 spike needed:** Whether `AnthropicAdapter` passes through `betas: ["structured-outputs-2025-11-13"]` is unconfirmed — classification call may need to bypass CopilotKit runtime entirely. Architecture accommodates the split.
+- **RESOLVED — Phase 3 spike:** Anthropic SDK 0.95.x integration uses prompt-coerced JSON + Zod validation (Plan 03-01 chose this conservative path); structured-outputs beta upgrade left as a v2/Phase-4 option. Classification call bypasses CopilotKit runtime entirely (direct `/api/analyze-pr` route handler). Architecture confirmed.
 - **Phase 4 spike needed:** Whether `useCopilotAction` with `render` property is current API or deprecated in favor of AG-UI / `useAgent` in CopilotKit 1.56.x needs doc verification before Phase 4 begins.
+- **Phase 4 prerequisite:** `.env.local` `ANTHROPIC_API_KEY` is currently a placeholder (`sk-ant-pla…`, 18 chars). End-to-end classification will fail with HTTP 500 ("invalid x-api-key") until a real key is provisioned. The route's classifier-failure path is verified working; only the secret needs replacement.
 
 ## Deferred Items
 
@@ -91,6 +101,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-05-09T23:43:42.284Z
-Stopped at: Phase 2 context gathered
+Last session: 2026-05-10T00:30:00.000Z
+Stopped at: Phase 03 complete (Plan 02 final commit landed); ready for Phase 04
 Resume file: None
