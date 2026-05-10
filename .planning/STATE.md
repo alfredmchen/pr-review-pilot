@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: executing
-stopped_at: Phase 03 Plan 02 complete — ready for Phase 4
-last_updated: "2026-05-10T00:30:00.000Z"
-last_activity: 2026-05-10 -- Phase 03 Plan 02 complete; Phase 03 done
+status: verifying
+stopped_at: Phase 03 complete (Plan 02 final commit landed); ready for Phase 04
+last_updated: "2026-05-10T01:16:52.726Z"
+last_activity: 2026-05-10
 progress:
   total_phases: 4
-  completed_phases: 3
-  total_plans: 4
-  completed_plans: 4
-  percent: 75
+  completed_phases: 4
+  total_plans: 5
+  completed_plans: 5
+  percent: 100
 ---
 
 # Project State
@@ -21,16 +21,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-05-09)
 
 **Core value:** The right review interface for this specific PR, so reviewers focus on the real risks instead of generating noise
-**Current focus:** Phase 03 — llm-classification-core-ui
+**Current focus:** Phase 04 — four-review-cards-copilotkit-hook
 
 ## Current Position
 
-Phase: 03 (llm-classification-core-ui) — COMPLETE
-Plan: 2 of 2 (final plan in phase shipped)
-Status: Phase 03 complete; ready for Phase 04 (Four Review Cards + CopilotKit Hook)
-Last activity: 2026-05-10 -- Phase 03 Plan 02 shipped end-to-end UI vertical slice (form + dispatcher + 8 cards + route wiring)
+Phase: 04 (four-review-cards-copilotkit-hook) — EXECUTING
+Plan: 1 of 1
+Status: Phase complete — ready for verification
+Last activity: 2026-05-10
 
-Progress: [████████░░] 75%
+Progress: [██████████] 100%
 
 ## Performance Metrics
 
@@ -56,6 +56,7 @@ Progress: [████████░░] 75%
 | Phase 02-type-system-github-api-integration P01 | 5min | 3 tasks | 5 files |
 | Phase 03-llm-classification-core-ui P01 | 50min | 3 tasks | 14 files |
 | Phase 03-llm-classification-core-ui P02 | 25min | 3 tasks | 12 files |
+| Phase 04-four-review-cards-copilotkit-hook P01 | 6min | 3 tasks tasks | 9 files files |
 
 ## Accumulated Context
 
@@ -80,6 +81,11 @@ Recent decisions affecting current work:
 - [Phase 03 P02]: useTransition over Server Action for FETCH-03 — client-side fetch lets the form own the loading-state moment precisely; setPanel({kind:'loading'}) commits before the fetch promise resolves
 - [Phase 03 P02]: Two-layer prType fallback (Zod enum + CARD_MAP nullish + UnclassifiedCard) closes REQUIREMENTS.md flagged risk for unexpected prType values
 - [Phase 03 P02]: ReactElement (not JSX.Element) used in Record<PRType, () => …> typing — React 19 + project tsconfig does not auto-resolve global JSX namespace
+- [Phase ?]: [Phase 04 P01]: useCopilotAction (legacy) confirmed available in CopilotKit react-core 1.57.1; FrontendAction.render API matches CONTEXT decision — no fallback to useFrontendTool/AG-UI needed
+- [Phase ?]: [Phase 04 P01]: Dispatcher uses per-prType cast (signals as XSignal) — TypeScript cannot cross-narrow signals from r.prType; runtime safety lives in lib/anthropic.ts cross-arm check
+- [Phase ?]: [Phase 04 P01]: useCopilotAction is parity-only (available:enabled, no handler — render-only); direct-render path through PRResultPanel is the visual source of truth
+- [Phase ?]: [Phase 04 P01]: Empty signal fields render em-dash; never hide sections — consistency across PRs (CONTEXT Signal Population Strategy)
+- [Phase ?]: [Phase 04 P01]: shadcn checkbox now uses @base-ui/react (not Radix); onCheckedChange API still compatible
 
 ### Pending Todos
 
@@ -101,6 +107,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-05-10T00:30:00.000Z
+Last session: 2026-05-10T01:16:31.553Z
 Stopped at: Phase 03 complete (Plan 02 final commit landed); ready for Phase 04
 Resume file: None

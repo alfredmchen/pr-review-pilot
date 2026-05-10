@@ -21,10 +21,10 @@
 
 ### Review Cards
 
-- [ ] **CARD-01**: Security PR renders a card with: risk flags, affected auth paths, OWASP-aligned interactive checklist, severity rating (HIGH / MEDIUM / LOW), hardcoded secrets indicator
-- [ ] **CARD-02**: Refactor PR renders a card with: files moved/renamed, dependency impact, test coverage delta, behavior preservation note, PR scope assessment
-- [ ] **CARD-03**: API change PR renders a card with: before/after endpoint surface, breaking change flags, versioning assessment, downstream consumers note, HTTP method/status changes
-- [ ] **CARD-04**: Bug fix PR renders a card with: root cause summary, blast radius/affected area, fix adequacy signal, regression risk flag, missing test coverage warning
+- [x] **CARD-01**: Security PR renders a card with: risk flags, affected auth paths, OWASP-aligned interactive checklist, severity rating (HIGH / MEDIUM / LOW), hardcoded secrets indicator
+- [x] **CARD-02**: Refactor PR renders a card with: files moved/renamed, dependency impact, test coverage delta, behavior preservation note, PR scope assessment
+- [x] **CARD-03**: API change PR renders a card with: before/after endpoint surface, breaking change flags, versioning assessment, downstream consumers note, HTTP method/status changes
+- [x] **CARD-04**: Bug fix PR renders a card with: root cause summary, blast radius/affected area, fix adequacy signal, regression risk flag, missing test coverage warning
 
 ---
 
@@ -62,10 +62,10 @@
 | FETCH-04 | Phase 3 — LLM Classification + Core UI | Complete |
 | FETCH-05 | Phase 3 — LLM Classification + Core UI | Complete |
 | CLASS-01 | Phase 3 — LLM Classification + Core UI | Complete |
-| CARD-01 | Phase 4 — Four Review Cards + CopilotKit Hook | Pending |
-| CARD-02 | Phase 4 — Four Review Cards + CopilotKit Hook | Pending |
-| CARD-03 | Phase 4 — Four Review Cards + CopilotKit Hook | Pending |
-| CARD-04 | Phase 4 — Four Review Cards + CopilotKit Hook | Pending |
+| CARD-01 | Phase 4 — Four Review Cards + CopilotKit Hook | Complete |
+| CARD-02 | Phase 4 — Four Review Cards + CopilotKit Hook | Complete |
+| CARD-03 | Phase 4 — Four Review Cards + CopilotKit Hook | Complete |
+| CARD-04 | Phase 4 — Four Review Cards + CopilotKit Hook | Complete |
 
 ---
 

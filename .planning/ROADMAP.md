@@ -74,7 +74,7 @@ Decimal phases appear between their surrounding integers in numeric order.
   4. A bug fix PR URL renders a card with root cause summary, blast radius/affected area, fix adequacy signal, regression risk flag, and missing test coverage warning
   5. `useCopilotAction` is registered and maps all four `prType` values to their card components; the demo shows at least three distinct card UIs from three different PR URLs
 **Plans**: 1 plan
-  - [ ] 04-01-PLAN.md — Final phase: install shadcn checkbox + build 4 real cards (Security/Refactor/ApiChange/BugFix) replacing placeholders, swap PRResultPanel imports + signals prop pass-through, build CopilotPRResultPanel client wrapper with useCopilotAction registration, mount in app/page.tsx, demo-verify 3 distinct PR URLs (4 tasks; final task is human-verify checkpoint)
+  - [x] 04-01-PLAN.md — Final phase: install shadcn checkbox + build 4 real cards (Security/Refactor/ApiChange/BugFix) replacing placeholders, swap PRResultPanel imports + signals prop pass-through, build CopilotPRResultPanel client wrapper with useCopilotAction registration, mount in app/page.tsx, demo-verify 3 distinct PR URLs (4 tasks; final task is human-verify checkpoint)
 **UI hint**: yes
 
 ## Progress
