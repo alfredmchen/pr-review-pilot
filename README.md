@@ -1,5 +1,7 @@
 # PR Review Copilot
 
+**Demo:** [https://youtu.be/QNTDrWV3naM](https://youtu.be/QNTDrWV3naM)
+
 A web tool where you paste a GitHub PR URL and get a completely different review interface depending on what's actually in the diff.
 
 - Security-sensitive change → security checklist with risk flags and OWASP-aligned items
