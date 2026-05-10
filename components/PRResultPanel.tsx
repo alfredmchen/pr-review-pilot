@@ -2,32 +2,37 @@
 
 // components/PRResultPanel.tsx
 //
-// Phase 3 / Plan 03-02 — THE dispatcher. Switches on response.status first,
-// then on response.prType for the 'ok' arm. Both switches are exhaustive
-// (TypeScript `never` check on default) AND have a runtime fallback
-// (UnclassifiedCard) so unexpected values cannot render nothing.
+// Phase 4 / Plan 04-01 — dispatcher updated to render the four REAL cards
+// from Phase 4. Switch shape preserved: status switch first (with
+// exhaustiveness check + UnclassifiedCard fallback), then prType switch
+// inside the 'ok' arm (also exhaustive + UnclassifiedCard fallback).
 //
-// This component is intentionally NOT registered with `useCopilotAction` in
-// Phase 3 — that's a Phase 4 concern. Phase 3 renders cards directly via the
-// CARD_MAP. Phase 4 will refactor to CopilotKit generative UI but the visual
-// surfaces stay the same.
+// Cross-arm narrowing: r.status === "ok" narrows r to AnalyzeOk, but
+// AnalyzeOk.signals is the union PRSignals — TypeScript does NOT cross-narrow
+// signals.type from r.prType because the cross-field invariant is not
+// expressible in the AnalyzeOk schema. The runtime constraint
+// (signals.type === prType) is enforced by lib/anthropic.ts after Zod parse;
+// we cast `r.signals as XSignal` per branch on that contract.
 //
-// Skeleton state (kind:'loading') is rendered here, not in PRUrlForm, so the
-// loading surface is co-located with the result surfaces it replaces. The
-// FETCH-03 100ms target is met by PRUrlForm flipping `state` to 'loading'
-// synchronously inside `startTransition` before awaiting the fetch.
+// Phase 3 carryover: skeleton state, error state, status arms (size-exceeded,
+// private-repo, not-found, invalid-url) are unchanged.
 
-import type { ReactElement } from "react";
 import type { AnalyzeResponse, PRType } from "@/lib/types";
+import type {
+  SecuritySignal,
+  RefactorSignal,
+  ApiChangeSignal,
+  BugFixSignal,
+} from "@/lib/types";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { PrivateRepoCard } from "@/components/cards/PrivateRepoCard";
 import { NotFoundCard } from "@/components/cards/NotFoundCard";
 import { PRSizeWarningCard } from "@/components/cards/PRSizeWarningCard";
-import { SecurityCardPlaceholder } from "@/components/cards/SecurityCardPlaceholder";
-import { RefactorCardPlaceholder } from "@/components/cards/RefactorCardPlaceholder";
-import { ApiChangeCardPlaceholder } from "@/components/cards/ApiChangeCardPlaceholder";
-import { BugFixCardPlaceholder } from "@/components/cards/BugFixCardPlaceholder";
+import { SecurityCard } from "@/components/cards/SecurityCard";
+import { RefactorCard } from "@/components/cards/RefactorCard";
+import { ApiChangeCard } from "@/components/cards/ApiChangeCard";
+import { BugFixCard } from "@/components/cards/BugFixCard";
 import { UnclassifiedCard } from "@/components/cards/UnclassifiedCard";
 
 type PanelState =
@@ -36,12 +41,17 @@ type PanelState =
   | { kind: "result"; response: AnalyzeResponse }
   | { kind: "error"; message: string };
 
-const CARD_MAP: Record<PRType, () => ReactElement> = {
-  security: SecurityCardPlaceholder,
-  refactor: RefactorCardPlaceholder,
-  "api-change": ApiChangeCardPlaceholder,
-  "bug-fix": BugFixCardPlaceholder,
-};
+// Two-layer dispatch: prType selects the component; signals are passed
+// through as a prop. Kept as `as const satisfies` so a future refactor can
+// switch back to lookup-style dispatch if signal narrowing improves.
+// Reference is also used by CopilotPRResultPanel's render callback (Task 3).
+const CARD_MAP = {
+  security: SecurityCard,
+  refactor: RefactorCard,
+  "api-change": ApiChangeCard,
+  "bug-fix": BugFixCard,
+} as const satisfies Record<PRType, unknown>;
+void CARD_MAP;
 
 export function PRResultPanel({ state }: { state: PanelState }) {
   if (state.kind === "idle") return null;
@@ -75,11 +85,23 @@ export function PRResultPanel({ state }: { state: PanelState }) {
   const r = state.response;
   switch (r.status) {
     case "ok": {
-      // Belt + suspenders: Zod already enforced the prType enum on the route
-      // success path, but `?? UnclassifiedCard` defends against any future
-      // schema drift or LLM-driven enum widening that bypasses validation.
-      const Component = CARD_MAP[r.prType] ?? UnclassifiedCard;
-      return <Component />;
+      // Belt + suspenders narrowing — see file header for the cross-arm
+      // contract that justifies the `as` casts.
+      switch (r.prType) {
+        case "security":
+          return <SecurityCard signals={r.signals as SecuritySignal} />;
+        case "refactor":
+          return <RefactorCard signals={r.signals as RefactorSignal} />;
+        case "api-change":
+          return <ApiChangeCard signals={r.signals as ApiChangeSignal} />;
+        case "bug-fix":
+          return <BugFixCard signals={r.signals as BugFixSignal} />;
+        default: {
+          const _exhaustive: never = r.prType;
+          void _exhaustive;
+          return <UnclassifiedCard />;
+        }
+      }
     }
     case "size-exceeded":
       return <PRSizeWarningCard fileCount={r.fileCount} lineCount={r.lineCount} />;
