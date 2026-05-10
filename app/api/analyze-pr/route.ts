@@ -1,15 +1,22 @@
 // app/api/analyze-pr/route.ts
 //
-// POST /api/analyze-pr — Phase 2 vertical-slice endpoint.
+// POST /api/analyze-pr — Phase 3 vertical-slice endpoint.
 // Accepts {url: string}; validates against PR_URL_REGEX (D-01); fetches PR
 // metadata via Octokit (D-09); applies size gate (D-10); paginates /files
-// when within budget (D-11); returns discriminated union keyed on `status`
+// when within budget (D-11); classifies via Anthropic structured output
+// (CLASS-01, Phase 3); returns discriminated union keyed on `status`
 // (D-04, D-05). HTTP 400 only for invalid request (D-06); HTTP 5xx only
-// for unexpected transport errors (D-07). Phase 3 (FETCH-04) will catch
-// 401/404 from octokit.pulls.get and map to status: 'private-repo'.
+// for unexpected transport / classifier errors (D-07).
+//
+// Phase 3 additions over Phase 2:
+//  - 401/403 from `pulls.get` → status: 'private-repo' (FETCH-04, HTTP 200)
+//  - 404 from `pulls.get`     → status: 'not-found'    (HTTP 200)
+//  - Successful pipeline → calls classifyPR() and merges
+//    {prType, signals, classification_reason} into the 'ok' arm (CLASS-01).
 //
 // Server-only guard (Phase 1 lockdown): `import "@/lib/server-only"` MUST
-// be the first import — process.env.GITHUB_TOKEN is read below.
+// be the first import — process.env.GITHUB_TOKEN + ANTHROPIC_API_KEY are
+// read transitively below.
 
 import "@/lib/server-only";
 import { Octokit } from "@octokit/rest";
@@ -23,6 +30,7 @@ import {
   type PRFile,
   type PRMetadata,
 } from "@/lib/types";
+import { classifyPR } from "@/lib/anthropic";
 
 // D-12: Octokit constructed unconditionally with auth; module-scoped so
 // it is reused across requests. process.env.GITHUB_TOKEN MAY be undefined
@@ -71,15 +79,30 @@ export async function POST(req: Request): Promise<Response> {
     const result = await octokit.pulls.get({ owner, repo, pull_number });
     pullData = result.data;
   } catch (err) {
-    // D-13: Phase 2 lets these errors propagate. Phase 3 will catch 401/404
-    // and map to status:'private-repo' / 'not-found'. For now → 5xx (D-07).
     const status = (err as { status?: number })?.status;
+
+    if (status === 401 || status === 403) {
+      // FETCH-04 — private repo, or token lacks access.
+      // D-04: this is an expected outcome, not a server error → HTTP 200.
+      // 403 is included alongside 401: GitHub returns 403 when the call is
+      // authenticated but lacks read scope on the repo (private-repo intent).
+      const body: AnalyzeResponse = { status: "private-repo" };
+      return Response.json(AnalyzeResponseSchema.parse(body), { status: 200 });
+    }
+
+    if (status === 404) {
+      // PR not found — well-formed URL, no such PR.
+      const body: AnalyzeResponse = { status: "not-found" };
+      return Response.json(AnalyzeResponseSchema.parse(body), { status: 200 });
+    }
+
+    // D-07: any other GitHub error stays a true server error.
     return Response.json(
       {
         error: "GitHub API request failed.",
         upstreamStatus: status ?? null,
       },
-      { status: status === 404 || status === 401 ? 502 : 500 },
+      { status: 500 },
     );
   }
 
@@ -140,11 +163,32 @@ export async function POST(req: Request): Promise<Response> {
     patch: typeof f.patch === "string" ? f.patch : undefined,
   }));
 
-  // TODO Plan 03-02 Task 1: populate prType+signals+classification_reason
-  // from classifyPR(metadata, files). Phase 3 Plan 1 extended the 'ok' arm
-  // with these required fields; the call site is wired in Plan 2.
-  // @ts-expect-error Phase 3 Plan 2 wires this — see TODO above
-  const ok: AnalyzeResponse = { status: "ok", metadata, files };
+  // ---- Stage 3: classify via Anthropic (Phase 3, CLASS-01) ----------------
+  let classification: Awaited<ReturnType<typeof classifyPR>>;
+  try {
+    classification = await classifyPR(metadata, files);
+  } catch (err) {
+    // Classifier failure is a server error (D-07): the request was valid,
+    // GitHub responded, but the LLM step failed (rate limit, schema drift,
+    // missing API key, etc.). Phase 3 does not have a 'classifier-failed'
+    // status arm — keep the surface narrow, fail loud.
+    return Response.json(
+      {
+        error: "Classification failed.",
+        detail: err instanceof Error ? err.message : String(err),
+      },
+      { status: 500 },
+    );
+  }
+
+  const ok: AnalyzeResponse = {
+    status: "ok",
+    metadata,
+    files,
+    prType: classification.prType,
+    signals: classification.signals,
+    classification_reason: classification.classification_reason,
+  };
   // Runtime validation (cheap insurance against drift between types & API).
   const validated = AnalyzeResponseSchema.parse(ok);
   return Response.json(validated, { status: 200 });
