@@ -23,23 +23,12 @@ One Claude call returns a Zod-validated `PRAnalysis` object whose `prType` is ex
 | ---------------- | ----------------------------------------------- |
 | Framework        | Next.js 16 (App Router, Turbopack) + React 19   |
 | Generative UI    | `@copilotkit/react-core` + `@copilotkit/runtime` |
-| LLM              | Claude Sonnet 4.5 via `@anthropic-ai/sdk`       |
+| LLM              | Claude Haiku 4.5 via `@anthropic-ai/sdk`        |
 | GitHub API       | `@octokit/rest` (REST, paginated `/pulls/{id}/files`) |
 | Schema validation | Zod 4                                          |
 | Styling          | Tailwind CSS v4 + shadcn/ui primitives          |
 
 Notable non-choices: no Vercel AI SDK (Anthropic SDK passes directly into CopilotKit's adapter), no LangGraph (overkill for one classify-then-render pass), no auth (stateless demo with a server-side PAT).
-
-## Status
-
-This is an in-progress project, built in four phases:
-
-- [x] **Phase 1 — Scaffolding + security foundation.** Next.js app boots, CopilotKit runtime endpoint live at `/api/copilotkit`, env vars server-only (no `NEXT_PUBLIC_` prefixes on secrets).
-- [ ] **Phase 2 — Type system + GitHub API integration.** Shared `lib/types.ts` contract and a curl-testable `/api/analyze-pr` route with paginated diff fetching and a size gate.
-- [ ] **Phase 3 — LLM classification + core UI.** End-to-end pipeline: URL input → fetch → Claude structured output → result panel dispatch, with loading and error states.
-- [ ] **Phase 4 — Four review cards + CopilotKit hook.** All four type-specific cards fully populated; `useCopilotAction` registered for generative UI.
-
-Demo success condition: three different PR URLs producing three visibly distinct review UIs.
 
 ## Local development
 
@@ -59,10 +48,8 @@ Both keys are server-only — never prefix either with `NEXT_PUBLIC_` or they wi
 
 | Var                 | Purpose                                                  |
 | ------------------- | -------------------------------------------------------- |
-| `GITHUB_TOKEN`      | Classic PAT with `public_repo` scope (read public diffs) |
-| `ANTHROPIC_API_KEY` | Anthropic API key for Claude classification              |
-
-In Phase 1 a placeholder Anthropic key is enough for the runtime endpoint to register; a real key is only needed once classification is wired up in Phase 3.
+| `GITHUB_TOKEN`      | Classic PAT with `public_repo` scope (read public diffs) — optional but raises rate limit from 60/hr to 5000/hr |
+| `ANTHROPIC_API_KEY` | Anthropic API key for Claude classification — required for the LLM call |
 
 ## Scripts
 
@@ -77,13 +64,23 @@ In Phase 1 a placeholder Anthropic key is enough for the runtime endpoint to reg
 
 ```
 app/
+  api/analyze-pr/route.ts   POST endpoint — fetch + size gate + classify
   api/copilotkit/route.ts   CopilotKit runtime endpoint
   layout.tsx                Root layout (Server Component)
   providers.tsx             "use client" boundary wrapping <CopilotKit>
-  page.tsx                  Home page
+  page.tsx                  Home page (server-rendered shell + form mount)
+components/
+  CopilotPRResultPanel.tsx  Client wrapper registering useCopilotAction
+  PRResultPanel.tsx         Status + prType dispatcher (exhaustive switch)
+  PRUrlForm.tsx             Input form with useTransition (100ms skeleton)
+  cards/                    8 cards: 4 prType + 4 status (private-repo, etc.)
+  ui/                       shadcn primitives (button, card, alert, …)
 lib/
+  types.ts                  Shared contract: PRType, AnalyzeResponse, signals
+  anthropic.ts              classifyPR() — server-only Anthropic client
   server-only.ts            Guard against importing secrets into client code
-.planning/                  Phase plans, requirements, roadmap
+  utils.ts                  shadcn cn() helper
+.planning/                  Phase plans, milestone archives, project state
 ```
 
 ## License
